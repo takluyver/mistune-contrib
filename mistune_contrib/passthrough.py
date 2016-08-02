@@ -1,4 +1,4 @@
-"""A Markdown Renderer for mistune.
+"""A Markdown passthrough for mistune.
 
 This can be subclassed to easily allow transformations of Markdown.
 """
