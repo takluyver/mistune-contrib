@@ -63,10 +63,8 @@ class RawInlineLexer(InlineLexer):
 
         tokens = []
 
-        self.line_started = False
         while text:
             ret = manipulate(text)
-            self.line_started = True
             if ret is not False:
                 m, rule = ret
                 tokens.append({'type': rule, 'block': False, 'text': m.group(0)})
