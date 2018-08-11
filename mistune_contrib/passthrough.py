@@ -5,6 +5,7 @@ This can be subclassed to easily allow transformations of Markdown.
 import inspect
 from mistune import Renderer, BlockLexer, InlineLexer, _pre_tags
 
+
 class RawBlockLexer(BlockLexer):
     def parse(self, text, rules=None):
         text = text.rstrip('\n')
@@ -41,6 +42,7 @@ class RawBlockLexer(BlockLexer):
                 raise RuntimeError('Infinite loop at: %s' % text)
         return raw_tokens
 
+
 class RawInlineLexer(InlineLexer):
     def __init__(self, rules=None, **kwargs):
         super(RawInlineLexer, self).__init__(Renderer(), rules=rules, **kwargs)
@@ -67,13 +69,15 @@ class RawInlineLexer(InlineLexer):
             ret = manipulate(text)
             if ret is not False:
                 m, rule = ret
-                tokens.append({'type': rule, 'block': False, 'text': m.group(0)})
+                tokens.append(
+                    {'type': rule, 'block': False, 'text': m.group(0)})
                 text = text[len(m.group(0)):]
                 continue
             if text:  # pragma: no cover
                 raise RuntimeError('Infinite loop at: %s' % text)
 
         return tokens
+
 
 class MarkdownTransformer(object):
     def __init__(self, inline=None, block=None, **kwargs):
@@ -158,9 +162,6 @@ class MarkdownTransformer(object):
     def output_table(self):
         token = self.token['tokens'][0]
         raw = self.token['text']
-        aligns = token['align']
-        aligns_length = len(aligns)
-        cell = ''
 
         # header part
         for i, value in enumerate(token['header']):
@@ -224,7 +225,7 @@ class MarkdownTransformer(object):
     def output_paragraph(self):
         return self.inline_tokens(self.token['text'])
 
-    def output_text(self, token = None):
+    def output_text(self, token=None):
         if token:
             return token['text']
         return self.tok_text()
