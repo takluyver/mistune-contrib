@@ -120,7 +120,6 @@ class MarkdownTransformer(object):
 
     def tok(self):
         t = self.token['type']
-        #print('block', t, repr(self.token['text']))
 
         # sepcial cases
         if t.endswith('_start'):
@@ -132,7 +131,6 @@ class MarkdownTransformer(object):
         results = []
         for t in self.inline.parse(text, rules=rules):
             meth = getattr(self, 'output_'+t['type'], self.inline_default)
-            #print('inline', t['type'], repr(t['text']))
             results.append(meth(t))
         return ''.join(results)
 
